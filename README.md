@@ -1,6 +1,6 @@
 # reloy
 
-Reloy was written in 2005 for a work presentation to demonstrate some very basic implementations of several open source libraries
+Reloy was written in 2005 as part of a presentation to demonstrate some very basic implementations of several open source libraries
 
 Includes:
 Struts
