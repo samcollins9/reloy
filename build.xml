@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="stp" default="deploy" basedir=".">
+
+<!-- ===================== Property Definitions =========================== -->
+
+    <!--
+         All properties should be defined in this section.
+	 Any host-specific properties should be defined
+	 in the build.properties file.
+
+	 In this app, the following properties are defined in build.properties:
+
+    -->
+
+  <property file="build.properties" />
+
+  <property name="app.home"          value="." />
+  <property name="app.name"          value="reloy"/>
+
+  <property name="src.home"          value="${app.home}/src"/>
+  <property name="web.home"          value="${app.home}/web"/>
+  <property name="doc.home"          value="${app.home}/doc"/>
+  
+  <property name="build.home"        value="${app.home}/build/"/>
+  <property name="server.lib"		 value="lib/servlet-api/weblogic.jar"/>
+
+  <property name="javadoc.pkg.top"   value="com"/>
+
+<!-- ==================== Compilation Classpath =========================== -->
+
+    <!--
+         This section creates the classpath for compilation.
+    -->
+
+  <path id="compile.classpath">
+    <fileset dir="lib">
+      <include name="*.jar"/>
+      <include name="*.zip"/>
+    </fileset>    
+    <fileset dir="lib/hibernate">
+      <include name="*.jar"/>
+    </fileset>    
+    <fileset dir="lib/hsqldb">
+      <include name="*.jar"/>
+    </fileset>    
+    <fileset dir="lib/sitemesh">
+      <include name="*.jar"/>
+    </fileset>    
+    <fileset dir="lib/displaytag">
+      <include name="*.jar"/>
+    </fileset>
+    <pathelement location="${server.lib}" />
+  </path>
+
+
+<!-- ==================== "help" Target =================================== -->
+
+    <!--
+         This is the default ant target executed if no target is specified.
+	 This helps avoid users just typeing 'ant' and running a
+	 default target that may not do what they are anticipating...
+    -->
+
+ <target name="help">
+   <echo message="Please specify a target! [usage: ant &lt;targetname&gt;]"/>
+   <echo message="Here is a list of possible targets: "/>
+   <echo message=""/>      
+   <echo message="  all........Runs clean, build, test, javadoc and deploy targets"/>   
+   <echo message="  clean......Delete deploy dir, javadoc dir, all .class and war files"/>
+   <echo message="  build......Build war file from .class and other files"/>
+   <echo message="  javadoc....Generates javadoc for this application"/>
+   <echo message="  test.......Runs all unit tests for this application"/>
+   <echo message="  deploy.....Copy war file to the webapps directory"/>
+   <echo message=""/>
+ </target>
+
+<!-- ==================== "all" Target ==================================== -->
+
+    <!--
+         This task cleans the project, creates Javadoc API, runs JUnit tests, and deploys
+    -->
+
+  <target name="all" depends="clean,javadoc,test,deploy" />
+
+
+
+<!-- ======================== "clean" Target ============================== -->
+
+    <!--
+          This target should clean up any traces of the application
+	  so that if you run a new build directly after cleaning.
+          Does NOT clean torque related files
+    -->
+
+ <target name="clean" >
+ 
+    <delete dir="${build.home}"/>
+    
+    <delete dir="${web.home}/WEB-INF/classes"/>
+
+    <!-- delete the javadoc -->
+    <delete dir="${doc.home}"/>
+
+ </target>
+
+
+
+<!-- ==================== "build" Target =================================== -->
+
+  <target name="build" depends="clean">
+  
+    <mkdir dir="${build.home}/${app.name}" />
+    <mkdir dir="${build.home}/${app.name}/WEB-INF" />
+    <mkdir dir="${build.home}/${app.name}/WEB-INF/classes" />
+      
+    <javac srcdir="${src.home}" destdir="${build.home}/${app.name}/WEB-INF/classes"  debug="yes">
+        <classpath refid="compile.classpath"/>
+    </javac>
+    
+    <!-- Copy all the properties files, etc that go on the classpath -->
+    <copy todir="${build.home}/${app.name}/WEB-INF/classes">
+      <fileset dir="${src.home}">
+         <include name="**/*.xml" />
+         <include name="**/*.properties" />
+         <exclude name="**/CVS/**"/>
+      </fileset>
+    </copy>
+
+    <!-- Copy all the Tag lib descriptors -->
+    <copy todir="${build.home}/${app.name}/WEB-INF/tlds">
+      <fileset dir="${web.home}/WEB-INF/tlds">
+         <include name="**/*.tld" />
+         <exclude name="**/CVS/**"/>
+      </fileset>
+    </copy>
+
+    <!-- Copy all the XML configuration files that go in WEB-INF -->
+    <copy todir="${build.home}/${app.name}">
+      <fileset dir="${web.home}">
+         <include name="**/*.xml" />
+         <exclude name="**/CVS/**"/>
+      </fileset>
+    </copy>
+
+    <!-- Copy all the properties files, etc that go on the classpath -->
+    <copy todir="${build.home}/${app.name}">
+      <fileset dir="${web.home}">
+         <include name="**/*.jsp" />
+         <include name="**/*.css" />
+         <exclude name="**/CVS/**"/>
+      </fileset>
+    </copy>
+    
+    <!-- Copy all the properties files, etc that go on the classpath -->
+    <copy todir="${build.home}/${app.name}/WEB-INF/lib">
+    	<fileset dir="lib">
+      	  <include name="*.jar"/>
+      	  <include name="*.zip"/>
+    	</fileset>    
+    	<fileset dir="lib/hibernate">
+      	  <include name="*.jar"/>
+    	</fileset>    
+    	<fileset dir="lib/hsqldb">
+      	  <include name="*.jar"/>
+    	</fileset>    
+    	<fileset dir="lib/mysql">
+      	  <include name="*.jar"/>
+    	</fileset>    
+    	<fileset dir="lib/sitemesh">
+          <include name="*.jar"/>
+    	</fileset>    
+    	<fileset dir="lib/displaytag">
+      	  <include name="*.jar"/>
+    	</fileset>
+    </copy>
+    
+    
+  </target>
+
+
+<!-- ==================== "deploy" Target ================================= -->
+
+    <!--
+         This target builds the relow.war file
+    -->
+
+  <target name="deploy" depends="build">
+
+	<delete dir="${deploy.dir}/${app.name}" failonerror="false" quiet="true"/>
+    <delete dir="${deploy.dir}/${app.name}.war"/>
+    <!-- Create the <war> file -->
+    <jar jarfile="${deploy.dir}/${app.name}.war"
+         basedir="${build.home}/${app.name}"/>
+
+  </target>
+
+<!-- ==================== "javadoc" Target ================================= -->
+
+    <!--
+         This task creates javadoc. It is dependent upon only the
+	 'compile' target but it is not executed in a normal build.
+         As a result, the target needs to be run on its own.
+    -->
+
+  <target name="javadoc">
+  
+    <echo message="Creating javadoc at ${doc.home}/api"/>
+    <mkdir  dir="${doc.home}"/>
+    <mkdir  dir="${doc.home}/api"/>
+  
+    <javadoc sourcepath = "${src.home}"
+             destdir = "${doc.home}/api"
+             packagenames = "${javadoc.pkg.top}.*"/>
+  </target>
+
+<!-- ===================+ "test" Target ================================ -->
+
+    <!--
+         This task runs all jUnit tests.  
+    -->
+
+  <target name="test" depends="build">
+  
+    <echo message="Running JUnit tests"/>
+    
+    <!--junit printsummary="yes">
+      <classpath>
+        <pathelement location="${build.home}/WEB-INF/classes"/>
+        <path refid="compile.classpath"/>
+      </classpath>
+
+      <formatter type="plain"/>
+
+      <test name="btp.struts.action.test.SaveCompanyActionTest"/>
+      <test name="btp.struts.action.test.EditCompanyActionTest"/>
+    </junit-->
+  </target>
+
+
+	
+</project>

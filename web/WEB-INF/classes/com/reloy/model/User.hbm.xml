@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="com.reloy.model.User" table="user">
+    	<!-- cache usage="read-only" /> read & write -->
+        <id name="id" column="id" type="long">
+            <generator class="increment"/>
+        </id>
+        <property name="username" column="username" type="string" />
+        <property name="firstname" column="firstname" type="string" />
+        <property name="lastname" column="lastname" type="string" />
+        
+        <property name="birthday" column="birthday" type="date"  />
+  
+    </class>
+</hibernate-mapping>

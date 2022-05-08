@@ -1,0 +1,79 @@
+<?xml version="1.0" ?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://www.velocitypayment.com/dtd/web-app_2_3.dtd">
+<web-app>
+
+	<filter>
+    	<filter-name>ResponseOverrideFilter</filter-name> 
+    	<filter-class>org.displaytag.filter.ResponseOverrideFilter</filter-class> 
+	</filter>
+	
+    <filter>
+        <filter-name>sitemesh</filter-name>
+        <filter-class>com.opensymphony.module.sitemesh.filter.PageFilter</filter-class>
+    </filter>
+    
+	<filter-mapping>
+    	<filter-name>ResponseOverrideFilter</filter-name> 
+    	<url-pattern>*.do</url-pattern>
+	</filter-mapping>
+	<filter-mapping> 
+    	<filter-name>ResponseOverrideFilter</filter-name> 
+    	<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+    <filter-mapping>
+        <filter-name>sitemesh</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    
+  <servlet>
+    <servlet-name>action</servlet-name>
+    <servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
+    <!-- init-param>
+      <param-name>config</param-name>
+      <param-value>/WEB-INF/struts-config.xml</param-value>
+    </init-param -->
+    <init-param>
+            <param-name>application</param-name>
+            <param-value>com.reloy.util.ApplicationResources</param-value>
+    </init-param>
+ <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>action</servlet-name>
+    <url-pattern>*.do</url-pattern>
+  </servlet-mapping>
+
+
+  <welcome-file-list>
+    <welcome-file>menu.jsp</welcome-file>
+  </welcome-file-list>
+
+	<taglib>
+  		<taglib-uri>struts-bean.tld</taglib-uri>
+      	<taglib-location>/WEB-INF/tlds/struts-bean.tld</taglib-location>
+   	</taglib>
+
+    <taglib>
+      	<taglib-uri>struts-html.tld</taglib-uri>
+      	<taglib-location>/WEB-INF/tlds/struts-html.tld</taglib-location>
+    </taglib>
+
+    <taglib>
+      	<taglib-uri>struts-logic.tld</taglib-uri>
+      	<taglib-location>/WEB-INF/tlds/struts-logic.tld</taglib-location>
+   	</taglib>
+
+	<taglib>
+  		<taglib-uri>display.tld</taglib-uri>
+      	<taglib-location>/WEB-INF/tlds/display.tld</taglib-location>
+   	</taglib>
+ <taglib>
+    <taglib-uri>sitemesh-page</taglib-uri>
+    <taglib-location>/WEB-INF/tlds/sitemesh-page.tld</taglib-location>
+ </taglib>    
+ <taglib>
+    <taglib-uri>sitemesh-decorator</taglib-uri>
+     <taglib-location>/WEB-INF/tlds/sitemesh-decorator.tld</taglib-location>
+ </taglib>    
+</web-app>

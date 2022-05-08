@@ -1,0 +1,62 @@
+
+@import url(displaytag.css);
+
+body { font-family: verdana; font-size: 10px; color: #ffffff; text-indent: 1px; text-align: justify;
+scrollbar-face-color: #000000;
+scrollbar-arrow-color: #damnyu;
+scrollbar-shadow-color: #666666; }
+.body {
+ font-family: verdana; font-size: 10px; color: #ffffff; text-indent: 1px; text-align: justify 
+ width: 500px;
+ height: 350px;
+ background-color: #000000;
+ border-top: 1px dotted #cccccc;
+ border-left: 2px solid #cccccc;
+ border-bottom: 2px solid #cccccc;
+ border-right: 2px solid #cccccc;
+ }
+#sub {
+ position: relative;
+ width: -30px;
+ top: -11px;
+ font-family: verdana;
+ color: #000000;
+ font-size: 10px;
+ }
+.top {
+ width: 500px;
+ height: 45px;
+ background-color: #666666;
+ font-family: impact;
+ font-size: 20px;
+ color: red;
+ border-top: 2px solid #cccccc;
+ border-left: 2px solid #cccccc;
+ border-bottom: 0px solid #cccccc;
+ border-right: 2px solid #cccccc;
+ }
+.des {
+ background-color: transparent;
+ width: 250px;
+ }
+a.inner {
+	text-decoration: none;
+	color:#CCCCCC;
+	margin-right: 6px;
+}
+a.inner:hover {
+	color:#FFFFFF;
+	border-bottom: 1px dotted #90D088;
+}
+a.outer {
+	text-decoration: none;
+	color:#E0E0E0;
+	margin-left: 6px;
+}
+a.outer:hover {
+	color:#FFFFFF;
+	border-bottom: 1px dotted #C06468;
+}
+#dot {
+  border: 1px dotted #fffffff;
+  }

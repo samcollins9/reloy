@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+          
+<struts-config>
+
+  <!-- ========== Form Bean Definitions =================================== -->
+  <form-beans>
+
+    <!-- form bean for new user to request a username -->
+    <form-bean       name="newUserForm"
+                     type="org.apache.struts.validator.DynaValidatorForm">
+      <form-property name="username" type="java.lang.String"/>
+    </form-bean>
+
+    <!-- Registration form bean -->
+    <form-bean      name="userInfoForm"
+                    type="com.reloy.forms.UserInfoForm"/>
+
+  </form-beans>
+
+  <!-- ========== Global Forward Definitions ============================== -->
+  <global-forwards>
+  
+    <forward   	name="profileEdit"         	   			path="/edituser.do"/>
+    <forward	name="newuser"							path="/newUser.jsp" />
+    <forward	name="viewusers"						path="/viewusers.do"/>
+</global-forwards>
+
+
+  <!-- ========== Action Mapping Definitions ============================== -->
+
+  <action-mappings>
+
+	<action		path="/viewusers"
+				type="com.reloy.actions.ViewUsersAction"
+          		name="userInfoForm"
+              	scope="request"
+           		validate="false">
+      <forward name="success"              path="/viewUsers.jsp"/>
+	</action>	
+
+    <!-- Add a new user -->
+    <action    	path="/adduser"
+               	type="com.reloy.actions.AddUserAction"
+          		name="newUserForm"
+              	scope="request"
+           		validate="false"
+           		input="/newUser.jsp">
+      <forward name="success"              path="/editUser.jsp"/>
+    </action>
+
+    <!-- Edit user registration -->
+    <action    	path="/edituser"
+               	type="com.reloy.actions.EditUserAction"
+          		name="userInfoForm"
+              	scope="request"
+           		validate="false">
+      	<forward name="success"		path="/editUser.jsp" />
+    </action>
+
+    <!-- Save user registration -->
+    <action    	path="/saveuser"
+               	type="com.reloy.actions.SaveUserAction"
+          		name="userInfoForm"
+              	scope="request"
+              	input="/editUser.jsp">
+      	<forward name="success"		path="/menu.jsp" />
+    </action>
+
+  </action-mappings>
+
+  <!-- ========== Message Resources Definitions =========================== -->
+
+  <!-- message-resources parameter="com.reloy.util.ApplicationResources"/ -->
+
+</struts-config>
